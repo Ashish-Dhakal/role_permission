@@ -12,7 +12,7 @@ class RoleController extends Controller
        //show the permmission page
        public function index()
        {
-              $data['roles'] = Role::orderBy('created_at', 'ASC')->paginate(2);
+              $data['roles'] = Role::orderBy('created_at', 'ASC')->paginate(15);
               return view('role.list', $data);
        }
 

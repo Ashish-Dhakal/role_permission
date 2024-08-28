@@ -28,7 +28,7 @@
                             @enderror
                         </div>
 
-                        <div class="grid grid-cols-4">
+                        <div class="grid grid-cols-5">
                             @if ($permissions->isNotEmpty())
                                 @foreach ($permissions as $permission)
                                     <div class="my-3">
