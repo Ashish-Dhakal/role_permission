@@ -14,7 +14,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form action="{{route('articles.update', $article->id)}}" method="POST">
+                    <form action="{{route('articles.update', $article->slug)}}" method="POST">
                         @csrf
                         <div class="">
                             <label for="" class="text-lg fint-medium"> Title</label>

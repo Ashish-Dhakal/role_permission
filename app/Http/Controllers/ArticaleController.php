@@ -73,18 +73,20 @@ class ArticaleController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Articale $articale,$id)
+    public function edit(Articale $articale,$slug)
     {
-        $data['article'] = Articale::findorFail($id);
+        // $data['article'] = Articale::findorFail($slug);
+        $data['article'] = Articale::where('slug', $slug)->firstOrFail();
         return view('articles.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Articale $articale, $id)
+    public function update(Request $request, Articale $articale, $slug)
     {
-        $articale = Articale::findorFail($id);
+        $articale = Articale::findorFail($slug);
+        $articale = Articale::where('slug' ,$slug)->firstOrFail();
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3',

@@ -47,9 +47,9 @@
                             <td class="px-6 py-4">
                                 
                                 
-                                <a href="{{ route('articles.edit', $article->title) }}"
+                                <a href="{{ route('articles.edit', $article->slug) }}"
                                     class="bg-yellow-500 text-sm rounded-md text-white px-5 py-3">Edit</a>
-                                <form action="{{ route('articles.destroy', $article->id) }}" method="POST"
+                                <form action="{{ route('articles.destroy', $article->slug) }}" method="POST"
                                     class="inline-block">
                                     @csrf
                                     @method('DELETE')

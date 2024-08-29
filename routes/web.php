@@ -40,9 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/articles', [ArticaleController::class, 'index'])->name('articles.index');
     Route::get('/articles/create', [ArticaleController::class, 'create'])->name('articles.create');
     Route::post('/articles/store', [ArticaleController::class, 'store'])->name('articles.store');
-    Route::post('/articles/update/{id}', [ArticaleController::class, 'update'])->name('articles.update');
-    Route::get('/articles/edit/{id}', [ArticaleController::class, 'edit'])->name('articles.edit');
-    Route::delete('/articles/delete/{id}', [ArticaleController::class, 'destroy'])->name('articles.destroy');
+    Route::post('/articles/update/{slug}', [ArticaleController::class, 'update'])->name('articles.update');
+    Route::get('/articles/edit/{slug}', [ArticaleController::class, 'edit'])->name('articles.edit');
+    Route::delete('/articles/delete/{slug}', [ArticaleController::class, 'destroy'])->name('articles.destroy');
 
 
     Route::get('/user', [UserController::class, 'index'])->name('users.index');
