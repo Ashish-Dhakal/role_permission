@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class UserController extends Controller
+
+class UserController extends Controller implements HasMiddleware
 {
 
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:view user', only: ['index']),
+            new Middleware('permission:create user', only: ['create']),
+            new Middleware('permission:index user', only: ['index']),
+            new Middleware('permission:delete user', only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +38,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
+        $data['roles'] = Role::orderBy('name', 'ASC')->get();
+        return view('users.create', $data);
     }
 
     /**
@@ -33,7 +48,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:5|same:confirm_password',
+            'confirm_password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('')->withErrors($validator)->withInput();
+        }
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->password);
+        // $user->password = bcrypt($request->input('password'));
+        $user->save();
+
+        $user->syncRoles($request->role);
+        return redirect()->route('users.index')->with('success', 'User Added successfully');
     }
 
     /**
@@ -86,6 +119,5 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
     }
 }

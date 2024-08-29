@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Articale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ArticaleController extends Controller
+class ArticaleController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {  
+        return [
+            new Middleware('permission:create article',only:['create']),
+            new Middleware('permission:update article',only:['edit']),
+            new Middleware('permission:view article',only:['index']),
+            new Middleware('permission:delete article',only:['destroy']),
+        ];
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,7 +73,7 @@ class ArticaleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Articale $articale, $id)
+    public function edit(Articale $articale,$id)
     {
         $data['article'] = Articale::findorFail($id);
         return view('articles.edit', $data);

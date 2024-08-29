@@ -3,14 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-// use Spatie\Permission\Contracts\Permission;
-use Spatie\Permission\Models\Permission;
-
 use function Pest\Laravel\delete;
+use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Contracts\Permission;
+use Illuminate\Support\Facades\Validator;
 
-class PermissionController extends Controller
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class PermissionController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:permission crud',only:['create']),
+            new Middleware('permission:permission crud',only:['edit']),
+            new Middleware('permission:permission crud',only:['index']),
+            new Middleware('permission:permission crud',only:['destroy']),
+        ];
+
+    }
+
     //show the permmission page
     public function index()
     {
